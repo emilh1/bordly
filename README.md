@@ -21,6 +21,7 @@ npm run build
 - `index.html` finnes som eneste Bordly-master
 - den gamle duplikatkopien under `public/bordly/` ikke kommer tilbake
 - konkrete referanser til `/assets/*` og `/print/*` faktisk finnes i `public/`
+- interne `#anker`-lenker peker på en eksisterende `id` i siden
 
 Den samme kontrollen kjøres automatisk i GitHub Actions før produksjonsbuild.
 
