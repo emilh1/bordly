@@ -21,7 +21,8 @@ if (fs.existsSync(htmlPath)) {
   const re = /["'`]\/(assets|print)\/([^"'\`?#)]+)/g;
   let match;
   while ((match = re.exec(html)) !== null) {
-    refs.add(`${match[1]}/${decodeURIComponent(match[2])}`);
+    const ref = `${match[1]}/${decodeURIComponent(match[2])}`;
+    if (!ref.includes("${")) refs.add(ref);
   }
 
   if (refs.size === 0) {
