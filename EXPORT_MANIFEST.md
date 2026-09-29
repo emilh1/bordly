@@ -1,9 +1,10 @@
 # Bordly export manifest
 
-Exportert 29. september 2026 fra den nyeste Bordly-masteren i prosjektbiblioteket.
+Eksportert 29. september 2026 fra den nyeste Bordly-masteren i prosjektbiblioteket.
 
 ## Innhold
-- 1 komplett Bordly HTML-app
+
+- 1 komplett Bordly HTML-app: `index.html`
 - 104 WebP-bilder
 - 2 PNG-logo/wordmark-filer
 - 1 JPEG-eksempelbilde
@@ -12,15 +13,17 @@ Exportert 29. september 2026 fra den nyeste Bordly-masteren i prosjektbiblioteke
 - 2 PDF-eksempler
 - Instagram profilmerke + profiltekst
 
-Totalt kontrollert i Git-tree etter eksport: **124 filer**.
+Den opprinnelige standalone-masteren inneholdt 116 data-URI-er. De er eksternalisert uten regenerering: binærinnholdet ble skrevet direkte fra originalens base64-data til Git-blobs. HTML-en peker deretter på tilsvarende filer under `/assets/` og `/print/`.
 
-Den opprinnelige standalone-masteren inneholdt 116 data-URI-er. De er eksternalisert uten regenerering: binærinnholdet er skrevet direkte fra originalens base64-data til Git-blobs. HTML-en peker deretter på de tilsvarende filene under `/assets/` og `/print/`.
+## Stabilisering
 
-Den statiske masteren finnes både som `index.html` og `public/bordly/index.html`.
+`index.html` er eneste master. Den tidligere identiske kopien `public/bordly/index.html` er fjernet for å unngå at to versjoner kan drive fra hverandre.
+
+Automatisk kontroll ligger i `scripts/verify-static.mjs` og kjøres i GitHub Actions før hver build på pull requests og pushes til `main`.
 
 ## Verifisering
 
-- Git-tree: 126 filer før denne manifestoppdateringen
-- 104 WebP, 2 PNG, 1 JPEG, 2 SVG, 6 WOFF og 2 PDF
-- Alle konkrete `/assets/*`- og `/print/*`-referanser i Bordly-masteren matcher eksporterte filer
-- Gjenværende tekst `data:font/woff;base64,` er kun runtime-kode som genererer font-data ved PDF/SVG-rasterisering, ikke en innebygd asset
+- 104 WebP, 2 PNG, 1 JPEG, 2 SVG, 6 WOFF og 2 PDF ligger i repoet
+- konkrete `/assets/*`- og `/print/*`-referanser i Bordly-masteren må matche filer under `public/`
+- dynamiske template-referanser valideres ikke som bokstavelige filnavn
+- gjenværende tekst `data:font/woff;base64,` er runtime-kode for PDF/SVG-rasterisering, ikke en innebygd asset
