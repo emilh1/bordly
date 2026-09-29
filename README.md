@@ -9,22 +9,32 @@ npm install
 npm run dev
 ```
 
-Produksjonsbuild:
+## Verifiser før endringer merges
 
 ```bash
+npm run verify:static
 npm run build
 ```
 
+`verify:static` kontrollerer at:
+
+- `index.html` finnes som eneste Bordly-master
+- den gamle duplikatkopien under `public/bordly/` ikke kommer tilbake
+- konkrete referanser til `/assets/*` og `/print/*` faktisk finnes i `public/`
+
+Den samme kontrollen kjøres automatisk i GitHub Actions før produksjonsbuild.
+
 ## Struktur
 
-- `index.html` – hovedappen / den eksporterte Bordly-masteren
+- `index.html` – hovedappen og eneste Bordly-master
 - `public/assets/` – logo, fonter og produkt-/miljøbilder
 - `public/print/` – PDF-eksempler brukt i løsningen
-- `public/bordly/index.html` – samme komplette Bordly-master tilgjengelig som statisk kopi
 - `brand/` – profilmerke og Instagram-oppsett
+- `scripts/verify-static.mjs` – integritetskontroll for den statiske eksporten
+- `.github/workflows/build.yml` – CI-verifisering og produksjonsbuild
 
-Den store standalone-filen fra arbeidsprosessen er eksportert tapsfritt på innholdsnivå: innebygde data-URI-er er lagt ut som ordinære filer, og HTML-en peker på de samme originale byte-dataene.
+Den opprinnelige standalone-filen fra arbeidsprosessen er eksportert tapsfritt på innholdsnivå: innebygde data-URI-er er lagt ut som ordinære filer, og HTML-en peker på de samme originale byte-dataene.
 
 ## Videre utvikling
 
-GitHub `main` er nå source of truth for videre arbeid. Endringer kan gjøres uten Lovable-kreditter.
+GitHub `main` er source of truth for videre arbeid. Nye endringer bør gå via branch og pull request slik at integritetskontroll og build kjøres før merge.
