@@ -35,6 +35,19 @@ if (fs.existsSync(htmlPath)) {
       errors.push(`Mangler fil referert fra index.html: public/${ref}`);
     }
   }
+
+  const ids = new Set(
+    [...html.matchAll(/\bid=["']([^"']+)["']/g)].map((match) => match[1]),
+  );
+  const anchorRefs = [...html.matchAll(/\bhref=["']#([^"'{}$]+)["']/g)].map(
+    (match) => decodeURIComponent(match[1]),
+  );
+
+  for (const anchor of anchorRefs) {
+    if (anchor && !ids.has(anchor)) {
+      errors.push(`Brutt intern lenke i index.html: #${anchor}`);
+    }
+  }
 }
 
 if (errors.length > 0) {
